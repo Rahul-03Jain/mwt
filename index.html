@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEasy - Online Shopping</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-center container">
+            <div class="nav-logo">
+                <h1>ShopEasy</h1>
+            </div>
+            <div class="nav-menu">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="nav-icons">
+                <a href="#search" class="icon"><i class="fas fa-search"></i></a>
+                <a href="#user" class="icon user-icon" id="user-icon"><i class="fas fa-user"></i></a>
+                <a href="#cart" class="icon cart-icon" id="cart-icon"><i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login/Register Modal -->
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-content">
+            <span class="close-btn" id="close-auth">&times;</span>
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="login-tab">Login</button>
+                <button class="auth-tab" id="register-tab">Register</button>
+            </div>
+            
+            <form id="login-form" class="auth-form active">
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+            
+            <form id="register-form" class="auth-form">
+                <h2>Create Account</h2>
+                <div class="form-group">
+                    <label for="register-name">Full Name</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm">Confirm Password</label>
+                    <input type="password" id="register-confirm" required>
+                </div>
+                <button type="submit" class="btn">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-content">
+            <span class="close-btn" id="close-cart">&times;</span>
+            <h2>Your Cart</h2>
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be inserted here from JavaScript -->
+            </div>
+            <div class="cart-summary">
+                <div class="subtotal">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal">$0.00</span>
+                </div>
+                <button class="btn checkout-btn" id="checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content container">
+            <h1>Find Amazing Products at Unbeatable Prices</h1>
+            <p>Shop the latest trends and discover great deals</p>
+            <a href="products.html" class="btn hero-btn">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="product-center" id="featured-products">
+                <!-- Products will be inserted here from JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Shop by Category</h2>
+            <div class="category-center">
+                <div class="category">
+                    <img src="/api/placeholder/300/300" alt="Electronics">
+                    <a href="electronics.html"><h3>Electronics</h3>
+                </div>
+                <div class="category">
+                    <img src="/api/placeholder/300/300" alt="Clothing">
+                    <a href="fashion.html"><h3>Clothing</h3>
+                </div>
+                <div class="category">
+                    <img src="/api/placeholder/300/300" alt="Home & Kitchen">
+                    <a href="home.html"><h3>Home & Kitchen</h3>
+                </div>
+                <div class="category">
+                    <img src="/api/placeholder/300/300" alt="Beauty">
+                    <a href="beauty.html"><h3>Beauty</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>ShopEasy</h3>
+                    <p>Your one-stop destination for all your shopping needs.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact" id="contact">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Main Street, City, Country</p>
+                    <p><i class="fas fa-phone"></i> +1 234 567 8900</p>
+                    <p><i class="fas fa-envelope"></i> info@shopeasy.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ShopEasy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="cart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
