@@ -194,9 +194,25 @@ window.addEventListener('click', function(event) {
     }
 });
 
-// Checkout button functionality
+// ===== EMAIL INTEGRATION: Helper function to get user info =====
+function getUserInfo() {
+    // Get user info from localStorage (saved by auth.js)
+    const userData = localStorage.getItem('currentUser');
+    if (userData) {
+        const user = JSON.parse(userData);
+        return {
+            name: user.name,
+            email: user.email
+        };
+    }
+    
+    // Fallback: return null if not logged in
+    return null;
+}
+
+// ===== UPDATED CHECKOUT BUTTON FUNCTIONALITY WITH EMAIL =====
 if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', function() {
+    checkoutBtn.addEventListener('click', async function() {
         if (cart.length === 0) {
             alert('Your cart is empty! Add items before checkout.');
             return;
@@ -209,17 +225,94 @@ if (checkoutBtn) {
             authModal.style.display = 'block';
             return;
         }
+
+        // Get user information
+        const userInfo = getUserInfo();
         
-        // Process checkout
-        alert('Processing your order... Thank you for shopping with us!');
+        // If we couldn't get user info, prompt for it
+        let customerName, customerEmail;
         
-        // Clear cart after successful checkout
+        if (userInfo && userInfo.email) {
+            customerName = userInfo.name;
+            customerEmail = userInfo.email;
+        } else {
+            // Prompt for email if not available
+            customerEmail = prompt('Please enter your email address for order confirmation:');
+            
+            if (!customerEmail || !customerEmail.includes('@')) {
+                alert('Valid email address is required for checkout.');
+                return;
+            }
+            
+            customerName = userInfo?.name || prompt('Please enter your name:') || 'Customer';
+        }
+        
+        // Disable checkout button and show processing state
+        const originalText = checkoutBtn.textContent;
+        checkoutBtn.textContent = '⏳ Processing...';
+        checkoutBtn.disabled = true;
+        
+        // Generate order ID
+        const orderId = 'ORD-' + Date.now();
+        const total = calculateCartTotal();
+        
+        // Prepare order data for email
+        const orderData = {
+            customerEmail: customerEmail,
+            customerName: customerName,
+            orderId: orderId,
+            items: cart, // Pass the cart array directly
+            total: total.toFixed(2)
+        };
+        
+        // ===== SEND EMAIL =====
+        try {
+            const emailResult = await sendOrderEmail(orderData);
+            
+            if (emailResult.success) {
+                // Success - email sent!
+                alert(
+                    `✅ Order Placed Successfully!\n\n` +
+                    `Order ID: ${orderId}\n` +
+                    `Total: $${total.toFixed(2)}\n\n` +
+                    `A confirmation email has been sent to:\n${customerEmail}\n\n` +
+                    `Thank you for shopping with us!`
+                );
+            } else {
+                // Email failed but order still processed
+                alert(
+                    `⚠️ Order Placed\n\n` +
+                    `Order ID: ${orderId}\n` +
+                    `Total: $${total.toFixed(2)}\n\n` +
+                    `However, the confirmation email could not be sent.\n` +
+                    `Please save your order ID for your records.\n\n` +
+                    `Thank you for shopping with us!`
+                );
+            }
+        } catch (error) {
+            // Error occurred
+            console.error('Checkout error:', error);
+            alert(
+                `⚠️ Order Placed\n\n` +
+                `Order ID: ${orderId}\n` +
+                `Total: $${total.toFixed(2)}\n\n` +
+                `There was an issue sending the confirmation email.\n` +
+                `Please save your order ID.\n\n` +
+                `Thank you for shopping with us!`
+            );
+        }
+        
+        // Clear cart after checkout
         cart = [];
         saveCart();
         updateCartUI();
         
         // Close cart modal
         cartModal.style.display = 'none';
+        
+        // Reset button state
+        checkoutBtn.textContent = originalText;
+        checkoutBtn.disabled = false;
     });
 }
 
